@@ -25,10 +25,12 @@ function clamp(value: number, min: number, max: number) {
     return Math.round(Math.min(Math.max(value, min), max));
 };
 
-export const DRAWMODE_BACKGROUND = "bg";
-export const DRAWMODE_FOREGROUND = "fg";
-export const DRAWMODE_BOTH = "bg fg";
-export const DRAWMODE_FILLBG_STROKEFG = "fill(bg) stroke(fg)";
+export enum DrawMode {
+    BACKGROUND = "BACKGROUND",
+    FOREGROUND = "FOREGROUND",
+    BOTH = "BOTH",
+    FILLBG_STROKEFG = "FILLBG_STROKEFG"
+}
 
 class Context {
     private _canvas: Canvas;
@@ -38,7 +40,7 @@ class Context {
     private _strokeColor: Color | undefined = [255, 255, 255];
     private _fillColor: Color | undefined = [100, 100, 100];
 
-    private _drawMode: string = "";
+    private _drawMode: DrawMode = DrawMode.FOREGROUND;
     private _strokePixel = (x: number, y: number) => { };
     private _fillPixel = (x: number, y: number) => { };
     private debugString = "";
@@ -48,7 +50,8 @@ class Context {
     constructor(canvas: Canvas) {
         this._canvas = canvas;
         this._matrix = mat2d.create();
-        this.drawMode = DRAWMODE_FOREGROUND;
+        // Repeat to set the initial code for the draw mode
+        this.drawMode = DrawMode.FOREGROUND;
     }
 
     get canvas() {
@@ -59,25 +62,23 @@ class Context {
         // Assuming a character's height is twice the width
         return this._canvas.blockSize.x / this._canvas.blockSize.y * 2;
     }
-    set drawMode(mode: string) {
+    set drawMode(mode: DrawMode) {
         this._drawMode = mode;
-        if (this._drawMode == DRAWMODE_FOREGROUND) {
+        if (this._drawMode == DrawMode.FOREGROUND) {
             this._fillPixel = (x, y) => {
                 this._canvas.setPixel(x, y, this._fillColor);
             };
             this._strokePixel = (x, y) => {
                 this._canvas.setPixel(x, y, this._strokeColor);
             };
-        }
-        if (this._drawMode == DRAWMODE_BACKGROUND) {
+        } else if (this._drawMode == DrawMode.BACKGROUND) {
             this._fillPixel = (x, y) => {
                 this._canvas.setBgPixel(x, y, this._fillColor);
             };
             this._strokePixel = (x, y) => {
                 this._canvas.setBgPixel(x, y, this._strokeColor);
             };
-        }
-        if (this._drawMode == DRAWMODE_BOTH) {
+        } else if (this._drawMode == DrawMode.BOTH) {
             this._fillPixel = (x, y) => {
                 this._canvas.setPixel(x, y, this._fillColor);
                 this._canvas.setBgPixel(x, y, this._fillColor);
@@ -86,8 +87,7 @@ class Context {
                 this._canvas.setPixel(x, y, this._strokeColor);
                 this._canvas.setBgPixel(x, y, this._strokeColor);
             };
-        }
-        if (this._drawMode == DRAWMODE_FILLBG_STROKEFG) {
+        } else if (this._drawMode == DrawMode.FILLBG_STROKEFG) {
             this._fillPixel = (x, y) => {
                 this._canvas.setPixel(x, y, undefined);
                 this._canvas.setBgPixel(x, y, this._fillColor);

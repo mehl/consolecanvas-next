@@ -35,7 +35,7 @@ yarn demo    # 3 Show demo
 
 The foreground and background are handled differently in the console, and therefore there are different modes for drawing in the foreground or background of the canvas.
 
-* **DRAWMODE_FOREGROUND** - Draws only in the foreground for stroke and fill. (**default**)
-* **DRAWMODE_BACKGROUND** - Draws only in the background for stroke and fill.
-* **DRAWMODE_BOTH** - Draw in the forground and background with both stroke and fill.
-* **DRAWMODE_FILLBG_STROKEFG** - Draw strokes in the foreground and fills in the background. Additionally filling will also remove foreground pixels.
+* **DrawMode.FOREGROUND** - Draws only in the foreground for stroke and fill. (**default**)
+* **DrawMode.BACKGROUND** - Draws only in the background for stroke and fill.
+* **DrawMode.BOTH** - Draw in the forground and background with both stroke and fill.
+* **DrawMode.FILLBG_STROKEFG** - Draw strokes in the foreground and fills in the background. Additionally filling will also remove foreground pixels.

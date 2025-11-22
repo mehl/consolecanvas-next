@@ -1,6 +1,6 @@
 {
-  "name": "@bf/consolecanvas-next",
-  "version": "1.0.0",
+  "name": "consolecanvas-next",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -20,6 +20,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup",
+    "pack": "npm run build && npm pack",
+    "publish:tgz": "npm run pack && FILE=$(ls -1 *.tgz) && npm publish $FILE --access public && mkdir -p releases && mv $FILE releases/",
     "demo": "node dist_demo/hello_world.mjs"
   },
   "devDependencies": {

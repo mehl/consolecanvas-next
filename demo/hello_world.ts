@@ -1,8 +1,7 @@
-import { ColorMode } from "../src/drawille/Color";
-import { Context, SmoothCanvas } from "../src/index";
+import { Context, SmoothCanvas, ColorMode } from "../src/index";
 
 const canvas = new SmoothCanvas(90, 30, { colorMode: ColorMode.TRUECOLOR });
-const ctx: Context = canvas.getContext();
+const ctx: Context = canvas.getContext("2d");
 
 for (let x = 0; x < ctx.width; x++) {
     for (let y = 0; y < ctx.height; y++) {

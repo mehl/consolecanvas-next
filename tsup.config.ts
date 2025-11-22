@@ -9,7 +9,10 @@ export default defineConfig([
         clean: true
     },
     {
-        entry: { "hello_world": "demo/hello_world.ts" },
+        entry: {
+            "hello_world": "demo/hello_world.ts",
+            "drawmodes": "demo/drawmodes.ts"
+        },
         format: ["esm"],
         outDir: "dist_demo"
     }

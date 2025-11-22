@@ -9,6 +9,8 @@ abstract class AbstractCanvas implements Canvas {
 
     protected textContent: Int32Array | undefined;
 
+    private _context: Context | undefined;
+
     blockSize: { x: number, y: number; };
 
     constructor(blockX: number, blockY: number) {
@@ -41,6 +43,12 @@ abstract class AbstractCanvas implements Canvas {
         this._height = Math.floor(height / 4) * 4;
         this.initBuffers();
         this.clear();
+    }
+
+    getContext(_name?: string): Context {
+        if (this._context) return this._context;
+        this._context = new Context(this);
+        return this._context;
     }
 
     protected initBuffers() {
@@ -87,10 +95,6 @@ abstract class AbstractCanvas implements Canvas {
         // Getting system line delimiter would give us a hard dependency on os module. Don't want that.
         const delimiter = "\n";
         return this.frame(delimiter);
-    }
-
-    getContext(): Context {
-        return new Context(this);
     }
 }
 export default AbstractCanvas;
