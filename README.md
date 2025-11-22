@@ -39,3 +39,10 @@ The foreground and background are handled differently in the console, and theref
 * **DrawMode.BACKGROUND** - Draws only in the background for stroke and fill.
 * **DrawMode.BOTH** - Draw in the forground and background with both stroke and fill.
 * **DrawMode.FILLBG_STROKEFG** - Draw strokes in the foreground and fills in the background. Additionally filling will also remove foreground pixels.
+
+## Example
+
+Example for **DrawMode.FILLBG_STROKEFG**: The fill for the surfaces is a light blue that goes to the background. The edges of thesirfaces are stroked to the foreground with black. Truecolor SmoothCanvas.
+
+<img src="docs/drawing_smooth_example.png" style="max-width: 80%; width: 30em; height: auto">
+
