@@ -1,0 +1,33 @@
+{
+  "name": "@bf/consolecanvas-next",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "author": {
+    "name": "Bastian Frank",
+    "email": "consolecanvas@bastian-frank.de"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "demo": "node dist_demo/hello_world.mjs"
+  },
+  "devDependencies": {
+    "@types/earcut": "^3.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "earcut": "^3.0.2"
+  }
+}
