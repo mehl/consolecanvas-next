@@ -1,4 +1,4 @@
-# @bf/consolecanvas-next
+# consolecanvas-next
 
 <img src="docs/screenshot.png" style="width: 100%; height: auto; margin: 3em 0" />
 
