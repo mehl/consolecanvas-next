@@ -4,6 +4,8 @@
 
 A versatile collection of drawing canvases for console and terminal environments. Features multiple rendering styles and color modes with web canvas API compatibility. Supports both Unicode block characters and Braille patterns (similar to drawille) for high-resolution terminal graphics.
 
+Heavily inspired and in part derived from [drawille](https://www.npmjs.com/package/drawille).
+
 **Key Features:**
 - Web Canvas API compatibility
 - Unicode block and Braille rendering modes
