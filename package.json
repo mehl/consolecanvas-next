@@ -1,12 +1,14 @@
 {
   "name": "consolecanvas-next",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "homepage": "https://github.com/mehl/consolecanvas-next",
+  "repository": "https://github.com/mehl/consolecanvas-next.git",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",

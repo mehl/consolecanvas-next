@@ -1,8 +1,8 @@
 # consolecanvas-next
 
-<img src="docs/screenshot.png" style="width: 100%; height: auto; margin: 3em 0" />
-
 A versatile collection of drawing canvases for console and terminal environments. Features multiple rendering styles and color modes with web canvas API compatibility. Supports both Unicode block characters and Braille patterns (similar to drawille) for high-resolution terminal graphics.
+
+<img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/screenshot.png" style="width: 100%; height: auto; margin: 3em 0" />
 
 Heavily inspired and in part derived from [drawille](https://www.npmjs.com/package/drawille).
 
@@ -46,5 +46,5 @@ The foreground and background are handled differently in the console, and theref
 
 Example for **DrawMode.FILLBG_STROKEFG**: The fill for the surfaces is a light blue that goes to the background. The edges of thesirfaces are stroked to the foreground with black. Truecolor SmoothCanvas.
 
-<img src="docs/drawing_smooth_example.png" style="max-width: 80%; width: 30em; height: auto">
+<img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/drawing_smooth_example.png" style="max-width: 80%; width: 30em; height: auto">
 
