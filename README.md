@@ -27,7 +27,7 @@ yarn demo    # 3 Show demo
 * **SmoothCanvas** - Supports truecolor and color mixing, drawille style.
 * **BlockCanvas** - Supports truecolor and color mixing, unicode block style.
 
-<img src="docs/canvas_types.png" style="max-width: 80%; width: 30em; height: auto">
+<img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/canvas_types.png" style="max-width: 80%; width: 30em; height: auto">
 
 ### FastCanvas
 
