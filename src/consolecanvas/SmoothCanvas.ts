@@ -58,7 +58,6 @@ class SmoothCanvas extends AbstractCanvas {
 
     setPixel(x: number, y: number, rgb: Color | undefined) {
         this.setBufferColor(x, y, rgb, this.foreground);
-
     }
     setBgPixel(x: number, y: number, rgb: Color | undefined) {
         this.setBufferColor(x, y, rgb, this.background);

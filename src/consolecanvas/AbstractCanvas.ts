@@ -68,6 +68,7 @@ abstract class AbstractCanvas implements Canvas {
     clearPixel(x: number, y: number) {
         this.setPixel(x, y, undefined);
         this.setBgPixel(x, y, undefined);
+        this.setCharacter(x, y, "", undefined, undefined);
     }
 
     setCharacter(x: number, y: number, character: string, fg: Color | undefined, bg: Color | undefined) {

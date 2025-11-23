@@ -56,7 +56,7 @@ export const progressRenderer = (canvas: Canvas, options?: ProgressOptions) => {
             // ctx.fillStyle = color;
             // ctx.fill();
             ctx.fillStyle = textColor;
-            const text = `${params.progressPercent}%`;
+            const text = `${Math.round(params.progressPercent)}%`;
             const measure = ctx.measureText(text);
             ctx.fillText(text, Math.ceil((ctx.width - measure.width) / 2), Math.ceil(ctx.height / 2 + .5));
         }

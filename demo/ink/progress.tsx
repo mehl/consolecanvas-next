@@ -2,6 +2,7 @@ import React from "react";
 import { render, Text, Box } from "ink";
 import { Progress } from "../../src/components/Progress";
 import { InkCanvas } from "../../src/components/InkCanvas";
+import { ProgressBar } from "../../src/components/ProgressBar";
 
 const App = () => {
     const [progress, setProgress] = React.useState(0);
@@ -13,9 +14,9 @@ const App = () => {
                     clearInterval(interval);
                     return 100;
                 }
-                return prev + 1;
+                return prev + .2;
             });
-        }, 100);
+        }, 20);
 
         return () => clearInterval(interval);
     }, []);
@@ -54,6 +55,7 @@ const App = () => {
                     </InkCanvas>
                 </Box>
             </Box>
+            <ProgressBar progress={progress / 100} />
         </Box>
     );
 };

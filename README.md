@@ -77,3 +77,18 @@ Example for **DrawMode.FILLBG_STROKEFG**: The fill for the surfaces is a light b
 
 <img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/drawing_smooth_example.png" style="max-width: 80%; width: 30em; height: auto">
 
+## Support for `ink` reactive console components
+
+[ink](https://github.com/vadimdemedes/ink) is a package for creating reactive user interfaces in terminals with react-jsx style reactivity and DOM trees.
+
+**concolevanvas-next** offers an `InkCanvas` react component that can directly be used in ink's JSX component tree. It makes a box that contains a canvas. Parameters are:
+
+* **width** (number) - width in **characters** (pixel will be width * 2)
+* **height** (number) - height in **characters** (pixel will be height *2)
+* **smooth** (boolean) - if true, uses `SmoothCanvas` in TRUECOLOR mode, otherwise uses `FastCanvas` in ANSI256 mode.
+* **adjustToSize** (boolean) - if true, the canvas tries to adjust to the screen space available. If false it stays at the given width/height.
+
+See the demo page for an example:
+
+<img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/inkdemo.png" >
+

@@ -71,6 +71,7 @@ class FastCanvas extends AbstractCanvas {
 
     clearPixel(x: number, y: number) {
         this.unset(x, y);
+        this.setCharacter(x, y, "", undefined, undefined);
     }
 
     setCharacter(x: number, y: number, character: string, fg: Color | undefined, bg: Color | undefined) {
@@ -150,7 +151,6 @@ class FastCanvas extends AbstractCanvas {
                 const bgcolor = this.bgBuffer?.[index] || 0;
                 if (bgcolor != lastBgColor) {
                     lastBgColor = bgcolor || 0;
-                    console.log(bgcolor);
                     accumulate.push(colorCodeToANSIString(bgcolor, true));
                 }
             }

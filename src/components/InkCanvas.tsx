@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text, measureElement } from "ink";
 import FastCanvas from "../consolecanvas/FastCanvas";
-import SmoothCanvas from "../consolecanvas/FastCanvas";
+import SmoothCanvas from "../consolecanvas/SmoothCanvas";
 import { ColorMode } from "../consolecanvas/Color";
 
 export const InkCanvas = ({ smooth, adjustToSize, children, width, height, ...restProps }: {
@@ -17,8 +17,9 @@ export const InkCanvas = ({ smooth, adjustToSize, children, width, height, ...re
 
     const canvas = React.useMemo(() => {
         const CanvasClass = smooth ? SmoothCanvas : FastCanvas;
+        const mode = smooth ? ColorMode.TRUECOLOR : ColorMode.ANSI256;
         return new CanvasClass(size.width * CanvasClass.BLOCKSIZE.x, size.height * CanvasClass.BLOCKSIZE.y, {
-            colorMode: smooth ? ColorMode.TRUECOLOR : ColorMode.ANSI256
+            colorMode: mode
         });
     }, [size]);
 
