@@ -325,6 +325,11 @@ auto-bind@^5.0.1:
   resolved "https://registry.npmjs.org/auto-bind/-/auto-bind-5.0.1.tgz"
   integrity sha512-ooviqdwwgfIfNmDwo94wlshcdzfO64XV0Cg6oDsDYBJfITDz1EngD2z7DkbvCWn+XIMsIqW27sEVF6qcpJrRcg==
 
+bresenham@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/bresenham/-/bresenham-0.0.4.tgz#157ff5cb6340b9c54add3b765c50869e8c759193"
+  integrity sha512-uMODedbWbeU1Hx+oLMKkmgfhpdcoN/xyMoPMUEEd7OK6IuU0EzWsAlHW6XdTVPj6MvSRJiXjwHvZ4cyRvCkCIw==
+
 bundle-require@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npmjs.org/bundle-require/-/bundle-require-5.1.0.tgz"
