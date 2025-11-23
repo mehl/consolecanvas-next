@@ -204,17 +204,19 @@ class Context {
         this._currentPath.lineTo(x, y);
     }
 
-    arc(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number, anticlockwise: boolean) {
-        var p, x, y;
+    arc(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number, counterclockwise: boolean = false) {
+        var x, y;
         var dth = Math.abs(Math.acos(1 / radius) - Math.acos(2 / radius));
-        if (anticlockwise) {
-            var tempth = endAngle;
-            endAngle = startAngle + 2 * Math.PI;
-            startAngle = tempth;
+        if (counterclockwise) {
+            dth = -dth;
+            const temp = endAngle;
+            endAngle = startAngle;
+            startAngle = temp;
         }
-        startAngle = startAngle % (2 * Math.PI);
-        if (endAngle < startAngle) endAngle = endAngle + 2 * Math.PI;
-        for (var th = startAngle; th <= endAngle; th += dth) {
+        // startAngle = startAngle % (2 * Math.PI);
+        if (dth > 0 && endAngle < startAngle) return;
+        if (dth < 0 && endAngle > startAngle) return;
+        for (var th = startAngle; dth > 0 ? th <= endAngle : th >= endAngle; th += dth) {
             y = radius * Math.sin(th) + centerY;
             x = radius * Math.cos(th) + centerX;
             this._currentPath.lineTo(x, y);

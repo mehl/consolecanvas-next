@@ -27,6 +27,35 @@ yarn demo    # 3 Show demo
 * **SmoothCanvas** - Supports truecolor and color mixing, drawille style.
 * **BlockCanvas** - Supports truecolor and color mixing, unicode block style.
 
+<img src="docs/canvas_types.png" style="max-width: 80%; width: 30em; height: auto">
+
+### FastCanvas
+
+Most basic canvas that supports up to 256 colors, drawille style.
+
+Supported ColorModes: `ColorMode.ANSI16`, `ColorMode.ANSI256`
+
+**Supports use of native AnsiColors like `AnsiColor.RED`**.
+
+### SmoothCanvas
+
+Supports truecolor and color mixing, drawille style.
+
+Supported ColorModes: `ColorMode.ANSI256`, `ColorMode.TRUECOLOR`
+
+**NO** support for native AnsiColors.
+
+### BlockCanvas
+
+Supports truecolor and color mixing, Unicode block style.
+
+Supported ColorModes: `ColorMode.ANSI256`, `ColorMode.TRUECOLOR`
+
+**NO** support for native AnsiColors.
+
+**Attention**: The canvas renders with a different aspect ratio (depending on screen font). Normally pixels are almost twice as high as they are wide. You can use `Context.scale(1, .5)` to correct this when rendering.
+
+
 ## Color Modes
 
 * **ColorMode.ANSI16** - restricted to the first 16 ANSI colors. If you use rgb while drawing, tries to fit to these colors, but don't expect too good results (esp. when you manually changed your terminal colors).

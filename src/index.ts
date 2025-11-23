@@ -4,6 +4,7 @@ import SmoothCanvas, { SmoothCanvasOptions } from "./consolecanvas/SmoothCanvas"
 import { ColorMode, AnsiColor } from "./consolecanvas/Color";
 import Context, { DrawMode } from "./consolecanvas/Context";
 import { AnimationHelper } from "./consolecanvas/AnimationHelper";
+import { InkCanvas } from "./components/InkCanvas";
 
 export {
     BlockCanvas,
@@ -16,5 +17,6 @@ export {
     ColorMode,
     DrawMode,
     AnsiColor,
-    AnimationHelper
+    AnimationHelper,
+    InkCanvas
 };

@@ -15,5 +15,9 @@
     "include": [
         "src",
         "demo"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
     ]
 }
