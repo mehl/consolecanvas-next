@@ -22,16 +22,33 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup",
+    "dev": "tsup --watch",
     "pack": "npm run build && npm pack",
     "publish:tgz": "npm run pack && FILE=$(ls -1 *.tgz) && npm publish $FILE --access public && mkdir -p releases && mv $FILE releases/",
     "demo": "node dist_demo/hello_world.mjs"
   },
   "devDependencies": {
     "@types/earcut": "^3.0.0",
+    "@types/react": "^19.2.6",
+    "ink": "^6.5.1",
+    "react": "^19.2.0",
     "tsup": "^8.5.1",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "earcut": "^3.0.2"
+    "earcut": "^3.0.2",
+    "gl-matrix": "^3.4.4"
+  },
+  "peerDependencies": {
+    "ink": ">=6",
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "ink": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   }
 }

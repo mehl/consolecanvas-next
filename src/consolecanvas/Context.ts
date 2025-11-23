@@ -1,28 +1,13 @@
 import { Canvas } from "./Canvas";
-import bresenham from "bresenham";
-import * as glMatrix from "gl-matrix";
-import { vec2 as Point, mat2d as TransformMatrix } from 'gl-matrix';
-import earcut from 'earcut';
-import { triangle, quad } from "./shapes";
+import { mat2d, vec2 } from 'gl-matrix';
 import { Color } from "./Color";
 import webColors from "./webColors";
-
-const mat2d = glMatrix.mat2d;
-const vec2 = glMatrix.vec2;
-
-type PathVertex = {
-    point: Point,
-    stroke: boolean;
-};
+import { Path } from "./Path";
 
 type ImageData = {
     data: string;
     width: number;
     height: number;
-};
-
-function clamp(value: number, min: number, max: number) {
-    return Math.round(Math.min(Math.max(value, min), max));
 };
 
 export enum DrawMode {
@@ -34,9 +19,9 @@ export enum DrawMode {
 
 class Context {
     private _canvas: Canvas;
-    private _matrix: TransformMatrix;
-    private _stack: TransformMatrix[] = [];
-    private _currentPath: PathVertex[] = [];
+    private _matrix: mat2d;
+    private _stack: mat2d[] = [];
+    private _currentPath: Path = new Path();
     private _strokeColor: Color | undefined = [255, 255, 255];
     private _fillColor: Color | undefined = [100, 100, 100];
 
@@ -100,16 +85,20 @@ class Context {
 
     }
 
-    set fillStyle(style: string) {
+    set fillStyle(style: string | Color) {
         this._fillColor = this.parseColor(style);
     }
-    set strokeStyle(style: string) {
+    set strokeStyle(style: string | Color) {
         this._strokeColor = this.parseColor(style);
     }
 
     private parseColor(style: string | Color): Color | undefined {
         if (Array.isArray(style)) {
             return <Color>style;
+        }
+        if (typeof style === "number") {
+            // Assume ANSI color code
+            return style;
         }
         if (typeof style === "string") {
             if (style.startsWith("rgb(")) {
@@ -152,61 +141,30 @@ class Context {
         return this._canvas.height;
     }
 
-    // setColor(rgb: Color | undefined) {
-    //     this._color = rgb;
-    // }
-    // setBgColor(rgb: Color | undefined) {
-    //     this._bgColor = rgb;
-    // }
-
     clear() {
         this._canvas.clear();
     }
 
     clearRect(x: number, y: number, w: number, h: number) {
-        quad(this._matrix, x, y, w, h, this._canvas.clearPixel.bind(this._canvas), [0, 0, this.width, this.height]);
+        var set = this._canvas.clearPixel.bind(this._canvas);
+        const path = new Path();
+        path.rect(x, y, w, h).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
+        // quad(this._matrix, x, y, w, h, this._canvas.clearPixel.bind(this._canvas), [0, 0, this.width, this.height]);
     }
 
     fillRect(x: number, y: number, w: number, h: number) {
-        quad(this._matrix, x, y, w, h, this._fillPixel.bind(this), [0, 0, this.width, this.height]);
-    }
+        var set = this._fillPixel.bind(this);
+        const path = new Path();
+        path.rect(x, y, w, h).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
 
-    fill() {
-        if (this._currentPath[this._currentPath.length - 1].point !== this._currentPath[0].point) {
-            this.closePath();
-        }
-
-        var vertices: number[] = [];
-
-        this._currentPath.forEach(function (pt: PathVertex) {
-            vertices.push(pt.point[0], pt.point[1]);
-        });
-
-        var triangleIndices = earcut(vertices);
-
-        var p1, p2, p3;
-        for (var i = 0; i < triangleIndices.length; i = i + 3) {
-            p1 = vec2.fromValues(vertices[triangleIndices[i] * 2], vertices[triangleIndices[i] * 2 + 1]);
-            p2 = vec2.fromValues(vertices[triangleIndices[i + 1] * 2], vertices[triangleIndices[i + 1] * 2 + 1]);
-            p3 = vec2.fromValues(vertices[triangleIndices[i + 2] * 2], vertices[triangleIndices[i + 2] * 2 + 1]);
-            triangle(p1, p2, p3, this._fillPixel.bind(this), [0, 0, this.width, this.height]);
-        }
+        // quad(this._matrix, x, y, w, h, this._fillPixel.bind(this), [0, 0, this.width, this.height]);
     }
 
     strokeRect(x: number, y: number, w: number, h: number) {
-        var fromX = clamp(x, 0, this.width),
-            fromY = clamp(y, 0, this.height),
-            toX = clamp(x + w, 0, this.width),
-            toY = clamp(y + h, 0, this.height);
-
         var set = this._strokePixel.bind(this);
-
-        bresenham(fromX, fromY, toX, fromY, set);
-        bresenham(toX, fromY, toX, toY, set);
-        bresenham(toX, toY, fromX, toY, set);
-        bresenham(fromX, toY, fromX, fromY, set);
+        const path = new Path();
+        path.rect(x, y, w, h).transform(this._matrix).stroke(set);
     }
-
 
     save() {
         this._stack.push(mat2d.clone(this._matrix));
@@ -223,7 +181,7 @@ class Context {
     }
 
     rotate(a: number) {
-        mat2d.rotate(this._matrix, this._matrix, a / 180 * Math.PI);
+        mat2d.rotate(this._matrix, this._matrix, a);
     }
 
     scale(x: number, y: number) {
@@ -231,60 +189,45 @@ class Context {
     }
 
     beginPath() {
-        this._currentPath = [];
+        this._currentPath.beginPath();
     }
 
     closePath() {
-        this._currentPath.push({
-            point: this._currentPath[0].point,
-            stroke: true
-        });
+        this._currentPath.closePath();
+    }
+
+    moveTo(x: number, y: number) {
+        this._currentPath.moveTo(x, y);
+    };
+
+    lineTo(x: number, y: number) {
+        this._currentPath.lineTo(x, y);
+    }
+
+    arc(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number, anticlockwise: boolean) {
+        var p, x, y;
+        var dth = Math.abs(Math.acos(1 / radius) - Math.acos(2 / radius));
+        if (anticlockwise) {
+            var tempth = endAngle;
+            endAngle = startAngle + 2 * Math.PI;
+            startAngle = tempth;
+        }
+        startAngle = startAngle % (2 * Math.PI);
+        if (endAngle < startAngle) endAngle = endAngle + 2 * Math.PI;
+        for (var th = startAngle; th <= endAngle; th += dth) {
+            y = radius * Math.sin(th) + centerY;
+            x = radius * Math.cos(th) + centerX;
+            this._currentPath.lineTo(x, y);
+        }
     }
 
     stroke() {
         var set = this._strokePixel.bind(this);
-        for (var i = 0; i < this._currentPath.length - 1; i++) {
-            var cur = this._currentPath[i];
-            var nex = this._currentPath[i + 1];
-            if (nex.stroke) {
-                bresenham(cur.point[0], cur.point[1], nex.point[0], nex.point[1], set);
-            }
-        }
+        this._currentPath.transform(this._matrix).stroke(set);
     }
 
-    moveTo(x: number, y: number) {
-        this.addPoint(x, y, false);
-    };
-
-    lineTo(x: number, y: number) {
-        this.addPoint(x, y, true);
-    }
-
-    arc(h: number, k: number, r: number, th1: number, th2: number, anticlockwise: boolean) {
-        var x, y;
-        var dth = Math.abs(Math.acos(1 / r) - Math.acos(2 / r));
-        if (anticlockwise) {
-            var tempth = th2;
-            th2 = th1 + 2 * Math.PI;
-            th1 = tempth;
-        }
-        th1 = th1 % (2 * Math.PI);
-        if (th2 < th1) th2 = th2 + 2 * Math.PI;
-        for (var th = th1; th <= th2; th = th + dth) {
-            y = clamp(r * Math.sin(th) + k, 0, this.height);
-            x = clamp(r * Math.cos(th) + h, 0, this.width);
-            this.addPoint(x, y, true);
-        }
-    }
-
-    private addPoint(x: number, y: number, stroke: boolean) {
-        const matrix = this._matrix;
-        const path = this._currentPath;
-        var v = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), matrix);
-        path.push({
-            point: [Math.floor(v[0]), Math.floor(v[1])],
-            stroke: stroke
-        });
+    fill() {
+        this._currentPath.transform(this._matrix).fill(this._fillPixel.bind(this), [0, 0, this.width, this.height]);
     }
 
     fillText(text: string, x: number, y: number) {

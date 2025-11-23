@@ -1,5 +1,5 @@
 import AbstractCanvas from "./AbstractCanvas";
-import { Color, color2ANSIString, ColorMode, resetANSIString, rgbToANSITrueColorString, RgbTripleColor } from "./Color";
+import { AnsiColor, Color, color2ANSIString, ColorMode, resetANSIString, rgbToANSITrueColorString, RgbTripleColor } from "./Color";
 
 const map = [
     [0x1, 0x8],
@@ -17,6 +17,9 @@ const DEFAULT_OPTIONS: SmoothCanvasOptions = {
 };
 
 class SmoothCanvas extends AbstractCanvas {
+
+    static BLOCKSIZE = { x: 2, y: 4 };
+
     protected foreground?: Uint32Array;
     protected background?: Uint32Array;
 
@@ -24,7 +27,7 @@ class SmoothCanvas extends AbstractCanvas {
     private clearBackgroundColor: number = 0xFF;
 
     constructor(width: number | undefined = undefined, height: number | undefined = undefined, options: SmoothCanvasOptions = DEFAULT_OPTIONS) {
-        super(2, 4);
+        super(SmoothCanvas.BLOCKSIZE.x, SmoothCanvas.BLOCKSIZE.y);
         this.width = width || this.maxWidth;
         this.height = height || this.maxHeight;
         this.options = options;
@@ -84,7 +87,9 @@ class SmoothCanvas extends AbstractCanvas {
             return;
         }
         const coord = x + this.width * y;
-        if (Array.isArray(rgb)) {
+        if (rgb === undefined || rgb == AnsiColor.INVISIBLE) {
+            target[coord] = 0; // Fully transparent
+        } else if (Array.isArray(rgb)) {
             target[coord] = rgb ? (rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 0xFF) : 0;
         } else {
             // No support for ANSI colors here
@@ -126,12 +131,15 @@ class SmoothCanvas extends AbstractCanvas {
     private middleColor(x: number, y: number, b?: Uint32Array): RgbTripleColor | undefined {
         if (!b) return undefined;
         const w = this.width;
+        // Collect colors of the 8 pixels of a character
         const colors = [b[(y + 0) * w + x], b[(y + 0) * w + x + 1], b[(y + 1) * w + x], b[(y + 1) * w + x + 1], b[(y + 2) * w + x], b[(y + 2) * w + x + 1], b[(y + 3) * w + x], b[(y + 3) * w + x + 1]];
-        const sum = colors.reduce((p, c) => p + (c & 0xFF), 0) / 0xFF;
-        if (sum == 0) return undefined;
-        const blue = Math.floor(colors.reduce((p, c) => p + (c >> 8 & 0xFF), 0) / sum);
-        const green = Math.floor(colors.reduce((p, c) => p + (c >> 16 & 0xFF), 0) / sum);
-        const red = Math.floor(colors.reduce((p, c) => p + (c >> 24 & 0xFF), 0) / sum);
+        // Compute the amount of visible alpha channel in sum
+        const alphaSum = colors.reduce((prev, color) => prev + (color & 0xFF), 0) / 0xFF;
+        if (alphaSum == 0) return undefined;
+        // Add according to alpha channel
+        const blue = Math.floor(colors.reduce((prev, color) => prev + (color >> 8 & 0xFF), 0) / alphaSum);
+        const green = Math.floor(colors.reduce((prev, color) => prev + (color >> 16 & 0xFF), 0) / alphaSum);
+        const red = Math.floor(colors.reduce((prev, color) => prev + (color >> 24 & 0xFF), 0) / alphaSum);
         return [red, green, blue];
     }
 

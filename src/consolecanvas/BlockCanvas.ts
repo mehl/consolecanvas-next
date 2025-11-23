@@ -27,10 +27,12 @@ export type BlockCanvasOptions = {
 };
 
 const DEFAULT_OPTIONS: BlockCanvasOptions = {
-    colorMode: ColorMode.ANSI16,
+    colorMode: ColorMode.TRUECOLOR,
 };
 
 class BlockCanvas extends AbstractCanvas {
+
+    static BLOCKSIZE = { x: 2, y: 2 };
 
     private foreground: Uint32Array | undefined;
     private background: Uint32Array | undefined;
@@ -39,7 +41,7 @@ class BlockCanvas extends AbstractCanvas {
     private clearBackgroundColor: number = 0xFF;
 
     constructor(width: number | undefined = undefined, height: number | undefined = undefined, options: BlockCanvasOptions = DEFAULT_OPTIONS) {
-        super(2, 2);
+        super(BlockCanvas.BLOCKSIZE.x, BlockCanvas.BLOCKSIZE.y);
         this.width = width || this.maxWidth;
         this.height = height || this.maxHeight;
         this.options = options;

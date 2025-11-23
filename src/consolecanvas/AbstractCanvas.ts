@@ -4,6 +4,8 @@ import Context from "./Context";
 
 abstract class AbstractCanvas implements Canvas {
 
+    static BLOCKSIZE = { x: 2, y: 4 };
+
     protected _width: number | undefined;
     protected _height: number | undefined;
 

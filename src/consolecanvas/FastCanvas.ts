@@ -20,6 +20,7 @@ const DEFAULT_OPTIONS: FastCanvasOptions = {
 
 class FastCanvas extends AbstractCanvas {
 
+    static BLOCKSIZE = { x: 2, y: 4 };
 
     private pixelBuffer?: Buffer;
 
@@ -31,7 +32,7 @@ class FastCanvas extends AbstractCanvas {
     private options: FastCanvasOptions;
 
     constructor(width: number | undefined = undefined, height: number | undefined = undefined, options: FastCanvasOptions = DEFAULT_OPTIONS) {
-        super(2, 4);
+        super(FastCanvas.BLOCKSIZE.x, FastCanvas.BLOCKSIZE.y);
         this.width = width || this.maxWidth;
         this.height = height || this.maxHeight;
         this.options = options;
@@ -57,7 +58,7 @@ class FastCanvas extends AbstractCanvas {
     }
 
     setPixel(x: number, y: number, rgb: Color | undefined) {
-        if (rgb === undefined) {
+        if (rgb === undefined || rgb == AnsiColor.INVISIBLE) {
             this.unset(x, y);
         } else {
             this.__setColor(x, y, rgb, this.fgBuffer);
@@ -127,39 +128,39 @@ class FastCanvas extends AbstractCanvas {
         return [coord, mask];
     };
 
-    frame(delimiter = '\n') {
+    frame(delimiter = '\n'): string {
         const frameWidth = this.width / 2;
         let lastColor = -1;
         let lastBgColor = -1;
-        const result = this.pixelBuffer?.reduce((acc: string[], cur: number, i: number) => {
-            if (i % frameWidth === 0 && i > 0) {
+        let result = this.pixelBuffer?.reduce((accumulate: string[], currentCharacter: number, index: number) => {
+            if (index % frameWidth === 0 && index > 0) {
                 if (lastColor != 0 || lastBgColor != 0) {
-                    acc.push("\x1b[0m");
+                    accumulate.push("\x1b[0m");
                     lastColor = -1;
                     lastBgColor = -1;
                 }
-                acc.push(delimiter);
+                accumulate.push(delimiter);
             }
-            const color = this.fgBuffer?.[i] || 0;
+            const color = this.fgBuffer?.[index] || 0;
             if (color != lastColor) {
                 lastColor = color || 0;
-                acc.push(colorCodeToANSIString(color, false));
+                accumulate.push(colorCodeToANSIString(color, false));
             }
             if (this.options.useBackground) {
-                const bgcolor = this.bgBuffer?.[i] || 0;
+                const bgcolor = this.bgBuffer?.[index] || 0;
                 if (bgcolor != lastBgColor) {
                     lastBgColor = bgcolor || 0;
                     console.log(bgcolor);
-                    acc.push(colorCodeToANSIString(bgcolor, true));
+                    accumulate.push(colorCodeToANSIString(bgcolor, true));
                 }
             }
-            if (this.textContent && this.textContent[i] > 0) {
-                acc.push(String.fromCharCode(this.textContent[i]));
+            if (this.textContent && this.textContent[index] > 0) {
+                accumulate.push(String.fromCharCode(this.textContent[index]));
 
             } else {
-                acc.push(cur ? String.fromCharCode(0x2800 + cur) : ' ');
+                accumulate.push(currentCharacter ? String.fromCharCode(0x2800 + currentCharacter) : ' ');
             }
-            return acc;
+            return accumulate;
         }, []);
         if (lastColor != 0 || lastBgColor != 0) {
             result?.push(resetANSIString());

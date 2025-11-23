@@ -23,7 +23,7 @@ export function triangle(pa: vec2Point, pb: vec2Point, pc: vec2Point, pixelFunct
     var s = a.concat(b).concat(c)
         //blow away y’s outside of the clipping area
         .filter(function (point) {
-            return point.y < clip[3] && point.y > clip[1];
+            return point.y < clip[3] && point.y >= clip[1];
         })
         .sort(function (a, b) {
             if (a.y == b.y) {
@@ -49,11 +49,11 @@ export function triangle(pa: vec2Point, pb: vec2Point, pc: vec2Point, pixelFunct
 }
 
 
-export function quad(m: mat2d, x: number, y: number, w: number, h: number, pixelFunction: PixelFunction, clip: Rectangle) {
-    var p1 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), m);
-    var p2 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x + w, y), m);
-    var p3 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y + h), m);
-    var p4 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x + w, y + h), m);
+export function quad(transformMatrix: mat2d, x: number, y: number, w: number, h: number, pixelFunction: PixelFunction, clip: Rectangle) {
+    var p1 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), transformMatrix);
+    var p2 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x + w, y), transformMatrix);
+    var p3 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y + h), transformMatrix);
+    var p4 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x + w, y + h), transformMatrix);
     triangle(p1, p2, p3, pixelFunction, clip);
     triangle(p3, p2, p4, pixelFunction, clip);
 }
