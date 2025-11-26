@@ -88,7 +88,9 @@ Example for **DrawMode.FILLBG_STROKEFG**: The fill for the surfaces is a light b
 * **smooth** (boolean) - if true, uses `SmoothCanvas` in TRUECOLOR mode, otherwise uses `FastCanvas` in ANSI256 mode.
 * **adjustToSize** (boolean) - if true, the canvas tries to adjust to the screen space available. If false it stays at the given width/height.
 
-See the demo page for an example:
+See the [demo pages](https://github.com/mehl/consolecanvas-next/tree/main/demo/ink) for examples:
 
 <img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/inkdemo.png" >
+
+<img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/downloads.png" >
 
