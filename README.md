@@ -1,6 +1,8 @@
 # consolecanvas-next
 
-A versatile collection of drawing canvases for console and terminal environments. Features multiple rendering styles and color modes with web canvas API compatibility. Supports both Unicode block characters and Braille patterns (similar to drawille) for high-resolution terminal graphics.
+A versatile collection of drawing canvases for console and terminal environments. Including a JSX component `<InkCanvas>` for the fantastic `ink` console ui builder.
+
+Features multiple rendering styles and color modes with web canvas API compatibility. Supports both Unicode block characters and Braille patterns (similar to drawille) for high-resolution terminal graphics.
 
 <img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/screenshot.png" style="width: 100%; height: auto; margin: 3em 0" />
 
