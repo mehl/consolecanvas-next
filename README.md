@@ -88,7 +88,40 @@ Example for **DrawMode.FILLBG_STROKEFG**: The fill for the surfaces is a light b
 * **smooth** (boolean) - if true, uses `SmoothCanvas` in TRUECOLOR mode, otherwise uses `FastCanvas` in ANSI256 mode.
 * **adjustToSize** (boolean) - if true, the canvas tries to adjust to the screen space available. If false it stays at the given width/height.
 
-See the [demo pages](https://github.com/mehl/consolecanvas-next/tree/main/demo/ink) for examples:
+Hello World Example:
+
+<img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/helloworld.png" >
+
+```javascript
+import React from 'react';
+import { Box, render, Text } from 'ink';
+import { InkCanvas } from 'consolecanvas-next';
+const HelloWorld = () => {
+
+    return <Box flexDirection="column" borderStyle="round" borderColor="cyan">
+        <Text color="white">InkCanvas Hello World.</Text>
+        <Box>
+            <InkCanvas width={60} height={15} adjustToSize={true}>
+                {(canvas) => {
+                    const ctx = canvas.getContext("2d");
+                    ctx.strokeStyle = "rgb(155,90,100)";
+                    ctx.strokeRect(0, 0, canvas.width - 1, canvas.height - 1);
+                    ctx.strokeRect(1, 1, canvas.width - 3, canvas.height - 3);
+                    ctx.fillStyle = "rgb(10,155,250)";
+                    ctx.beginPath();
+                    ctx.arc(canvas.width / 2, canvas.height / 2, Math.min(canvas.width, canvas.height) / 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }}
+            </InkCanvas>
+        </Box>
+    </Box>;
+};
+
+render(<HelloWorld />);
+```
+
+
+See the [demo pages](https://github.com/mehl/consolecanvas-next/tree/main/demo/ink) for more examples:
 
 <img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/inkdemo.png" >
 
