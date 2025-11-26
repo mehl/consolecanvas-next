@@ -13,8 +13,9 @@ export default defineConfig([
             "hello_world": "demo/hello_world.ts",
             "drawmodes": "demo/drawmodes.ts",
             "progress": "demo/progress.ts",
+            "shapes": "demo/shapes.ts",
             "ink/progress": "demo/ink/progress.tsx",
-            "shapes": "demo/shapes.ts"
+            "ink/downloads": "demo/ink/downloads.tsx"
         },
         format: ["esm"],
         outDir: "dist_demo"
