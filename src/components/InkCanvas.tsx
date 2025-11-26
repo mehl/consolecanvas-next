@@ -54,7 +54,7 @@ export const InkCanvas = ({ smooth, adjustToSize, children, width, height, ...re
                 // console.log("Frame unchanged");
             }
         }
-    }, [canvas]);
+    }, [canvas, children]);
 
     // Standard size is quite small!
     return <Box {...restProps} ref={adjustToSize ? boxRef : null}>

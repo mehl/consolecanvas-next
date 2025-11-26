@@ -25,7 +25,6 @@ const App = () => {
         borderStyle: 'round',
         borderColor: 'cyan',
     };
-
     return (
         <Box flexDirection="column" padding={1} gap={1}>
             <Text>Progress Component Demo</Text>
