@@ -14,6 +14,8 @@ export default defineConfig([
             "drawmodes": "demo/drawmodes.ts",
             "progress": "demo/progress.ts",
             "shapes": "demo/shapes.ts",
+            "bdf_fonts": "demo/bdf_fonts.ts",
+            "combined": "demo/combined.ts",
             "ink/progress": "demo/ink/progress.tsx",
             "ink/downloads": "demo/ink/downloads.tsx"
         },

@@ -3,6 +3,8 @@ import { mat2d, vec2 } from 'gl-matrix';
 import { Color } from "./Color";
 import webColors from "./webColors";
 import { Path } from "./Path";
+import { BdfText } from "./bdf/BdfText";
+import { globalFontManager } from "./bdf/FontManager";
 
 type ImageData = {
     data: string;
@@ -30,6 +32,7 @@ class Context {
     private _fillPixel = (x: number, y: number) => { };
     private debugString = "";
 
+    public font = "";
     public textAlign = "left";
 
     constructor(canvas: Canvas) {
@@ -148,22 +151,24 @@ class Context {
     clearRect(x: number, y: number, w: number, h: number) {
         var set = this._canvas.clearPixel.bind(this._canvas);
         const path = new Path();
-        path.rect(x, y, w, h).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
+        // Due to how fillRect is defined in HTML5 Canvas, we need to reduce width and height by .5
+        path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .5, Math.floor(h) - .5).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
         // quad(this._matrix, x, y, w, h, this._canvas.clearPixel.bind(this._canvas), [0, 0, this.width, this.height]);
     }
 
     fillRect(x: number, y: number, w: number, h: number) {
         var set = this._fillPixel.bind(this);
         const path = new Path();
-        path.rect(x, y, w, h).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
-
+        // Due to how fillRect is defined in HTML5 Canvas, we need to reduce width and height by .5
+        path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .5, Math.floor(h) - .5).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
         // quad(this._matrix, x, y, w, h, this._fillPixel.bind(this), [0, 0, this.width, this.height]);
     }
 
     strokeRect(x: number, y: number, w: number, h: number) {
         var set = this._strokePixel.bind(this);
         const path = new Path();
-        path.rect(x, y, w, h).transform(this._matrix).stroke(set);
+        // Due to how strokeRect is defined in HTML5 Canvas, we need to reduce width and height by .5
+        path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .5, Math.floor(h) - .5).transform(this._matrix).stroke(set);
     }
 
     save() {
@@ -233,6 +238,29 @@ class Context {
     }
 
     fillText(text: string, x: number, y: number) {
+        if (this.font?.endsWith(".bdf")) {
+            const bdf = new BdfText(this, this.font);
+            return bdf.drawText(text, x, y, this.textAlign, true);
+        }
+        const w = this._canvas.blockSize.x;
+        const align = this.textAlign;
+        let dist = 0;
+        if (align == "right") {
+            dist = -text.length * w;
+        }
+        if (align == "center") {
+            dist = -text.length * w / 2;
+        }
+        for (var i = 0; i < text.length; i++) {
+            this._canvas.setCharacter(x + dist + i * w, y, text.charAt(i), this._fillColor, undefined);
+        }
+    }
+
+    strokeText(text: string, x: number, y: number) {
+        if (this.font?.endsWith(".bdf")) {
+            const bdf = new BdfText(this, this.font);
+            return bdf.drawText(text, x, y, this.textAlign, false);
+        }
         const w = this._canvas.blockSize.x;
         const align = this.textAlign;
         let dist = 0;
@@ -248,6 +276,10 @@ class Context {
     }
 
     measureText(text: string): TextMetrics {
+        if (this.font?.endsWith(".bdf")) {
+            const bdf = new BdfText(this, this.font);
+            return bdf.measureText(text);
+        }
         return {
             fontBoundingBoxAscent: this._canvas.blockSize.y,
             actualBoundingBoxAscent: this._canvas.blockSize.y,
@@ -262,6 +294,14 @@ class Context {
             ideographicBaseline: this._canvas.blockSize.y,
             width: text.length * this._canvas.blockSize.x
         };
+    }
+
+    get fontSize() {
+        if (this.font?.endsWith(".bdf")) {
+            const font = globalFontManager.getFont(this.font);
+            return parseInt(font?.props.pixel_size || "0") || this._canvas.blockSize.y;
+        }
+        return this._canvas.blockSize.y;
     }
     getContext(_str: string) {
         return this;

@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/mehl/consolecanvas-next/main/docs/logo.png" style="width: 100%; height: auto; margin: 3em 0" />
+
 # consolecanvas-next
 
 A versatile collection of drawing canvases for console and terminal environments. Including a JSX component `<InkCanvas>` for the fantastic `ink` console ui builder.
