@@ -76,28 +76,7 @@ ctx.fill();
 
 ## Text Rendering
 
-Text rendering is done via `bdfparser` and supports all bdf bitmap fonts. You can find many free bdf fonts online or in th demo folder of this package.
-
-> Be sure to install the package `bdfparser` in your project to use text rendering.
-
-1. Load a BDF font using the `globalFontManager`. This is necessary so that you can use the font for text rendering.
-2. Set the `font` property of the context to the loaded font.
-3. Use the `fillText` or `strokeText` methods to render text on the canvas.
-
-```typescript
-import { globalFontManager } from "@consolecanvas-next";
-import { SmoothCanvas, ColorMode } from "../src/index";
-
-const canvas = new SmoothCanvas(undefined, undefined, { colorMode: ColorMode.TRUECOLOR });
-const ctx = canvas.getContext("2d");
-
-const logoFont = await globalFontManager.addFont("./demo/bdf-fonts/spleen-32x64.bdf");
-ctx.font = logoFont;
-ctx.fillStyle = "steelblue";
-ctx.fillText("consolecanvas-next", 0, 0);
-```
-
-The Context supports also transformations on text, but be careful as text rendering is pixel based and may look distorted when rotated or scaled.
+See the [Text Rendering](./text-rendering.md) documentation for details on how to render text with the Context class.
 
 ## Transformations
 

@@ -19,11 +19,12 @@ Heavily inspired and in part derived from [drawille](https://www.npmjs.com/packa
 
 ## Documentation
 
-- [Getting Started](docs/getting-started.md)
-- [Canvas Classes](docs/canvas.md)
-- [Context Class](docs/context.md)
-- [Animations](docs/animations.md)
-- [InkCanvas Integration](docs/inkcanvas.md)
+- [Getting Started](https://github.com/mehl/consolecanvas-next/blob/main/docs/getting-started.md)
+- [Canvas Classes](https://github.com/mehl/consolecanvas-next/blob/main/docs/canvas.md)
+- [Context Class](https://github.com/mehl/consolecanvas-next/blob/main/docs/context.md)
+- [Text Rendering](https://github.com/mehl/consolecanvas-next/blob/main/docs/text-rendering.md)
+- [Animations](https://github.com/mehl/consolecanvas-next/blob/main/docs/animations.md)
+- [InkCanvas](https://github.com/mehl/consolecanvas-next/blob/main/docs/inkcanvas.md) - `ink` integration component
 
 ## Canvas Classes
 
@@ -43,7 +44,7 @@ Example for **DrawMode.FILLBG_STROKEFG**: The fill for the surfaces is a light b
 
 [ink](https://github.com/vadimdemedes/ink) is a package for creating reactive user interfaces in terminals with react-jsx style reactivity and DOM trees.
 
-**concolevanvas-next** offers an `InkCanvas` react component that can directly be used in ink's JSX component tree. It makes a box that contains a canvas. Parameters are:
+**concolevanvas-next** offers an `InkCanvas` react component that can directly be used in ink's JSX component tree.
 
 Hello World Example:
 
