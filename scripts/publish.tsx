@@ -78,7 +78,7 @@ async function* publish(version: string, bumpVersion: boolean, doTag: boolean) {
     if (doTag) {
         yield { type: "step", msg: "Git commit + tag", progress: .4 };
         await run("git", "add", "package.json");
-        await run("git", "commit", "-m", `Release v${version}`);
+        await run("git", "commit", "-m", `"Release v${version}"`);
         await run("git", "tag", `v${version}`);
     }
 
