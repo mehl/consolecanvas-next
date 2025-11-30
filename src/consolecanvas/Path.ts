@@ -54,7 +54,30 @@ export class Path {
         return this;
     }
 
+    private isOnePixel(vertices: PathVertex[]): boolean {
+        let minX = Number.POSITIVE_INFINITY;
+        let maxX = Number.NEGATIVE_INFINITY;
+        let minY = Number.POSITIVE_INFINITY;
+        let maxY = Number.NEGATIVE_INFINITY;
+
+        vertices.forEach(vertex => {
+            if (vertex.point[0] < minX) minX = vertex.point[0];
+            if (vertex.point[0] > maxX) maxX = vertex.point[0];
+            if (vertex.point[1] < minY) minY = vertex.point[1];
+            if (vertex.point[1] > maxY) maxY = vertex.point[1];
+        });
+
+        return (maxX - minX < 1.3) && (maxY - minY < 1.3);
+    }
+
     fill(setPixel: (x: number, y: number) => void, clipRect: [number, number, number, number]) {
+        // Much faster to just set a single pixel than do all the triangulation
+        if (this.isOnePixel(this.vertices)) {
+            const vertex = this.vertices[0];
+            setPixel(Math.round(vertex.point[0]), Math.round(vertex.point[1]));
+            return this;
+        }
+
         if (this.vertices[this.vertices.length - 1].point !== this.vertices[0].point) {
             this.closePath();
         }
@@ -79,6 +102,12 @@ export class Path {
     };
 
     stroke(setPixel: (x: number, y: number) => void) {
+        // Much faster to just set a single pixel than do all the line drawing
+        if (this.isOnePixel(this.vertices)) {
+            const vertex = this.vertices[0];
+            setPixel(Math.round(vertex.point[0]), Math.round(vertex.point[1]));
+            return this;
+        }
         for (var i = 0; i < this.vertices.length - 1; i++) {
             var cur = this.vertices[i];
             var nex = this.vertices[i + 1];

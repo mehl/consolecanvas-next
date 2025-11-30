@@ -153,22 +153,20 @@ class Context {
         const path = new Path();
         // Due to how fillRect is defined in HTML5 Canvas, we need to reduce width and height by .5
         path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .5, Math.floor(h) - .5).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
-        // quad(this._matrix, x, y, w, h, this._canvas.clearPixel.bind(this._canvas), [0, 0, this.width, this.height]);
     }
 
     fillRect(x: number, y: number, w: number, h: number) {
         var set = this._fillPixel.bind(this);
         const path = new Path();
-        // Due to how fillRect is defined in HTML5 Canvas, we need to reduce width and height by .5
-        path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .5, Math.floor(h) - .5).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
-        // quad(this._matrix, x, y, w, h, this._fillPixel.bind(this), [0, 0, this.width, this.height]);
+        // Due to how fillRect is defined in HTML5 Canvas, we need to reduce width and height by a small amount
+        path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .2, Math.floor(h) - .2).transform(this._matrix).fill(set, [0, 0, this.width, this.height]);
     }
 
     strokeRect(x: number, y: number, w: number, h: number) {
         var set = this._strokePixel.bind(this);
         const path = new Path();
-        // Due to how strokeRect is defined in HTML5 Canvas, we need to reduce width and height by .5
-        path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .5, Math.floor(h) - .5).transform(this._matrix).stroke(set);
+        // Due to how strokeRect is defined in HTML5 Canvas, we need to reduce width and height by a small amount
+        path.rect(Math.floor(x), Math.floor(y), Math.floor(w) - .2, Math.floor(h) - .2).transform(this._matrix).stroke(set);
     }
 
     save() {
