@@ -1,4 +1,4 @@
-import { $Font, Font, Props } from "bdfparser";
+import { type Font, type Props } from "bdfparser";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
@@ -28,9 +28,21 @@ export class FontManager {
     }
 
     async addFont(fontFile: string) {
-        const font = await $Font(readlineIter(fontFile));
-        this.fonts[fontFile] = font;
-        return fontFile;
+        let $font: any;
+        try {
+            $font = await import("bdfparser").then(m => m.$Font);
+        } catch (e) {
+            console.error("Package \x1b[91mbdfparser\x1b[0m missing. Make sure it is installed if you want to use fonts.");
+            return "";
+        }
+        try {
+            const font = await $font(readlineIter(fontFile));
+            this.fonts[fontFile] = font;
+            return fontFile;
+        } catch (e) {
+            console.error(`Error loading font ${fontFile}: ${e}`);
+            return "";
+        }
     }
 
     getFont(fontFileName: string): Font | undefined {

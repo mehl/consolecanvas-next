@@ -1,4 +1,4 @@
-import { $Font, Bitmap, type Font } from "bdfparser";
+import type { Bitmap } from "bdfparser";
 import Context from "../Context";
 import { globalFontManager } from "./FontManager";
 
