@@ -1,9 +1,10 @@
 {
   "name": "consolecanvas-next",
-  "version": "1.1.3",
+  "version": "1.1.4-next",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "type": "module",
   "files": [
     "dist"
   ],
@@ -23,8 +24,9 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "pack": "npm run build && npm pack",
-    "publish:tgz": "npm run pack && FILE=$(ls -1 *.tgz) && npm publish $FILE --access public && mkdir -p releases && mv $FILE releases/",
+    "--pack": "npm run build && npm pack",
+    "--publish:tgz": "npm run pack && FILE=$(ls -1 *.tgz) && npm publish $FILE --access public && mkdir -p releases && mv $FILE releases/",
+    "publish": "tsx scripts/publish.tsx",
     "demo": "node dist_demo/hello_world.mjs"
   },
   "devDependencies": {
@@ -32,8 +34,11 @@
     "@types/react": "^19.2.6",
     "bdfparser": "^2.2.5",
     "ink": "^6.5.1",
+    "ink-select-input": "^6.2.0",
+    "ink-text-input": "^6.0.0",
     "react": "^19.2.0",
     "tsup": "^8.5.1",
+    "tsx": "^4.20.6",
     "typescript": "^5.8.3"
   },
   "dependencies": {
@@ -42,9 +47,9 @@
     "gl-matrix": "^3.4.4"
   },
   "peerDependencies": {
+    "bdfparser": ">=2.2.5",
     "ink": ">=6",
-    "react": ">=18",
-    "bdfparser": ">=2.2.5"
+    "react": ">=18"
   },
   "peerDependenciesMeta": {
     "ink": {

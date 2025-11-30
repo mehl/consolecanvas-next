@@ -1,6 +1,6 @@
-import BlockCanvas, { BlockCanvasOptions } from "./consolecanvas/BlockCanvas";
-import FastCanvas, { FastCanvasOptions } from "./consolecanvas/FastCanvas";
-import SmoothCanvas, { SmoothCanvasOptions } from "./consolecanvas/SmoothCanvas";
+import BlockCanvas, { type BlockCanvasOptions } from "./consolecanvas/BlockCanvas";
+import FastCanvas, { type FastCanvasOptions } from "./consolecanvas/FastCanvas";
+import SmoothCanvas, { type SmoothCanvasOptions } from "./consolecanvas/SmoothCanvas";
 import { ColorMode, AnsiColor } from "./consolecanvas/Color";
 import Context, { DrawMode } from "./consolecanvas/Context";
 import { AnimationHelper } from "./consolecanvas/AnimationHelper";
