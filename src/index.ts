@@ -5,6 +5,7 @@ import { ColorMode, AnsiColor } from "./consolecanvas/Color";
 import Context, { DrawMode } from "./consolecanvas/Context";
 import { AnimationHelper } from "./consolecanvas/AnimationHelper";
 import { InkCanvas } from "./components/InkCanvas";
+import { globalFontManager } from "./consolecanvas/bdf/FontManager";
 
 export {
     BlockCanvas,
@@ -18,5 +19,6 @@ export {
     DrawMode,
     AnsiColor,
     AnimationHelper,
-    InkCanvas
+    InkCanvas,
+    globalFontManager
 };

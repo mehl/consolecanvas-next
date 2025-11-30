@@ -32,7 +32,7 @@ class Context {
     private _fillPixel = (x: number, y: number) => { };
     private debugString = "";
 
-    public font = "";
+    public font: string = "";
     public textAlign = "left";
 
     constructor(canvas: Canvas) {
